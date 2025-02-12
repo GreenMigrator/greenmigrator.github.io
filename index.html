@@ -8,41 +8,54 @@
         body {
             font-family: "Comic Sans MS", cursive, sans-serif;
             text-align: center;
-            background-color: #a7c7a0;
+            background-color: #2e604a;
+            color: #a7c7a0;
             padding: 50px;
         }
         h1 {
-            color: #2e604a;
+            color: #a7c7a0;
         }
-        #countdown {
+        #countdown, #eidCountdown {
             font-size: 2em;
             margin-top: 20px;
-            color: #4a7c59;
         }
     </style>
 </head>
 <body>
     <h1>Countdown to Ramadan 2025</h1>
     <div id="countdown"></div>
+    <h1>Countdown to Eid al-Fitr 2025</h1>
+    <div id="eidCountdown"></div>
 
     <script>
-        function updateCountdown() {
+        function updateCountdowns() {
             const ramadanDate = new Date("February 28, 2025 00:00:00").getTime();
+            const eidDate = new Date("March 30, 2025 00:00:00").getTime();
             const now = new Date().getTime();
-            const timeLeft = ramadanDate - now;
 
+            const timeLeftRamadan = ramadanDate - now;
+            const timeLeftEid = eidDate - now;
+
+            document.getElementById("countdown").innerHTML = formatTime(timeLeftRamadan);
+            document.getElementById("eidCountdown").innerHTML = formatTime(timeLeftEid);
+
+            if (timeLeftRamadan < 0) {
+                document.getElementById("countdown").innerHTML = "Ramadan has begun!";
+            }
+            if (timeLeftEid < 0) {
+                document.getElementById("eidCountdown").innerHTML = "Eid al-Fitr has begun!";
+            }
+        }
+
+        function formatTime(timeLeft) {
             const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
             const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-            if (timeLeft < 0) {
-                document.getElementById("countdown").innerHTML = "Ramadan has begun!";
-            }
+            return `${days}d ${hours}h ${minutes}m ${seconds}s`;
         }
-        setInterval(updateCountdown, 1000);
+
+        setInterval(updateCountdowns, 1000);
     </script>
 </body>
 </html>
